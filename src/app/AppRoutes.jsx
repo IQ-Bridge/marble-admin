@@ -3,6 +3,8 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import { ApiProvider } from "../contexts/ApiContext.jsx";
 import { AuthProvider } from "../contexts/AuthContext.jsx";
 import Login from "../pages/Login/Login.jsx";
+import Dashboard from "../pages/Dashboard/Dashboard.jsx";
+import Orders from "../pages/Orders/Orders.jsx";
 export default function AppRoutes() {
   return (
     <AuthProvider>
@@ -10,8 +12,8 @@ export default function AppRoutes() {
           <Routes>
             {/* Public Routes */}
             <Route path="/login" element={<Login />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/orders" element={<Orders />} />
             <Route path="/login" element={<Login />} />            
             {/* Fallback for Undefined Routes */}
             <Route path="*" element={<Login />} />
