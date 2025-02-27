@@ -1,6 +1,5 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { auth } from "../firebase/Firebase";
-import Loading from "../pages/components/Loading/Loading";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -88,7 +87,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {loading ? <Loading /> : children}
+      { children}
       </AuthContext.Provider>
   );
 }
