@@ -1,4 +1,7 @@
 import { useContext, createContext, useState, useEffect } from "react";
+import { getRequest } from "../utils/ApiService";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 // import {
 //   getRequest,
 //   postRequest,
@@ -75,6 +78,12 @@ export function ApiProvider({ children }) {
   // console.log("current path ", location.pathname);
 
   const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState([])
+
+  const navigate = useNavigate();
+
+
+
   // const [apiUser, setApiUser] = useState(null);
   // const [posters, setPosters] = useState([]);
   // const [activePosters, setActivePosters] = useState([]);
@@ -365,6 +374,21 @@ export function ApiProvider({ children }) {
   //   }
   // };
 
+  const fetch_products = async() => {
+    setLoading(true)
+    try{
+const response = await getRequest('http://localhost:3000/products')
+setProducts(response.products)
+console.log(response.products)
+    }catch(e){
+      toast.error(e.message || "Failed to logout.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+ 
+
   // ////USE EFFECT HOOKS
 
   // useEffect(() => {
@@ -491,6 +515,8 @@ export function ApiProvider({ children }) {
   // ///ERROR HANDLING FOR LOADINGS AND ERRORS
 
   const value = {
+    fetch_products,
+    products
   };
   if (loading) {
     console.log("Loading state: ", loading);

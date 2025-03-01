@@ -1,43 +1,71 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Dashboard.css";
-import ProductCard from "./components/ProductCArd/ProductCard";
+import ProductCard from "./components/ProductCard/ProductCard";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+import { useApi } from "../../contexts/ApiContext";
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
-
   const navigate = useNavigate();
+  const { fetch_products, products } = useApi();
+  const { currentUser, logout } = useAuth();
 
 
+  const handleLogout = async() => {
+    try{
+      await logout();
+      toast.success('Successfully logged out')
+      navigate('/login')
+    }catch(e){
+      toast.error('Something went wrong')
+    }
+  }
 
+  useEffect(() => {
+    fetch_products();
+  }, []);
 
   return (
-    <div className="dashboard-container">
-      <div className="card w-75 p-3 sticky-top">
-        <div className="card-body ">
-          <h2>Hii Admin,</h2>
+    <div className="d-flex flex-column justify-content-center align-items-center">
+    <div className="card user-card sticky-top w-75 shadow p-4">
+        <div className="card-body">
+          <h2 className="mb-3">Hello, {currentUser?.name || "User"} 👋</h2>
           <div className="card-content">
-            <h5>Mobile number: 123456789</h5>
-            <h5>
-              Address: No.37, thiruvalluvar nagar main road, keelkatalai,
-              chennai - 600117
-            </h5>
-            <h5>Product Count: 50</h5>
-            <h5>Order Count: 500</h5>
-            <button onClick={() => navigate('/orders')}>Orders</button>
+            <p><strong>Mobile:</strong> 123456789</p>
+            <p>
+              <strong>Address:</strong> No.37, Thiruvalluvar Nagar Main Road, Keelkatalai,
+              Chennai - 600117
+            </p>
+            <p><strong>Product Count:</strong> {products.length}</p>
+            <p><strong>Order Count:</strong> {products.length * 5}</p>
+          </div>
+          <div className="btn-group mt-3">
+            <button className="btn btn-primary me-2" onClick={() => navigate("/orders")}>View Orders</button>
+            <button className="btn btn-success" onClick={() => navigate("/add-products")}>Add Products</button>
+            <button className="btn btn-danger ms-2" onClick={() => handleLogout()}>Logout</button>
           </div>
         </div>
       </div>
+    <div className="dashboard-container container">
+      {/* User Info Card */}
+      
 
-      <div className="products-container mt-4">
-        <h2>Your Products</h2>
-        <div className="row g-0 d-flex justify-content-center align-items-center">
-          {new Array(20).fill(null).map((_, idx) => {
-            return <div className="col-md-4 p-3" key={idx}>
-              <ProductCard />
-            </div>;
-          })}
-        </div>
+      {/* Products Section */}
+      <div className="products-container mt-5">
+        <h2 className="text-center mb-4">Your Products</h2>
+        {products.length === 0 ? (
+          <p className="text-center text-muted">No products available. Add some products.</p>
+        ) : (
+          <div className="row g-4">
+            {products.map((product, idx) => (
+              <div className="col-md-4" key={idx}>
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    </div>
+    </div></div>
   );
 }

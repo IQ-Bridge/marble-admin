@@ -1,0 +1,25 @@
+.add-product-container {
+    max-width: 600px;
+    margin: auto;
+    margin-top: 50px;
+  }
+  
+  .card {
+    border-radius: 10px;
+    border: none;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .form-control,
+  .form-select {
+    border-radius: 8px;
+  }
+  
