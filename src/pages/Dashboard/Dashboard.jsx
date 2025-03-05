@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./Dashboard.css";
-import ProductCard from "./components/ProductCard/ProductCard";
 import { useNavigate } from "react-router-dom";
+import ProductCard from "./components/ProductCard/ProductCard";
 import { useAuth } from "../../contexts/AuthContext";
 import { useApi } from "../../contexts/ApiContext";
 import { toast } from "react-toastify";
@@ -84,7 +84,7 @@ export default function Dashboard() {
               No products available. Add some products.
             </p>
           ) : (
-            <div className="row g-4">
+            <div className="row g-4 w-100">
               {products.map((product, idx) => (
                 <div className="col-md-4" key={idx}>
                   <ProductCard product={product} />

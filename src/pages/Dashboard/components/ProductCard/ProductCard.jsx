@@ -1,5 +1,4 @@
 import React from "react";
-import Carousel from "../Carousel/Carousel";
 import './ProductCard.css'
 
 export default function ProductCard({product}) {
