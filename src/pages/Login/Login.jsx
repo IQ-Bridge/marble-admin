@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import { validateForm } from "../../utils/FormUtility";
 import { handleInputChange } from "../../utils/InputStateFunctions";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
 import "./Login.css";
+import { useApi } from "../../contexts/ApiContext";
 
 export default function Login() {
-  const navigate = useNavigate();
-  const { loginFirebase } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const {login, loading} = useApi();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -23,25 +19,18 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     const { checked } = validateForm(formData, rules);
 
     if (!checked) {
-      setError("❌ Please fill in all fields correctly.");
-      return;
+      return toast.error('Something Went Wrong. Please try again later.');
     }
 
-    setLoading(true);
     try {
       console.log(formData);
-      await loginFirebase(formData.email, formData.password);
-      navigate("/dashboard");
+      await login(formData);
     } catch (e) {
-      setError("❌ Invalid email or password.");
-      console.error("Login Error:", e);
-    } finally {
-      setLoading(false);
-    }
+      console.log('Error on login: ', e)
+    } 
   };
 
   return (
@@ -49,7 +38,6 @@ export default function Login() {
       <div className="card form-card p-4 shadow-lg">
         <h2 className="text-center mb-4">Login</h2>
 
-        {error && <div className="alert alert-danger">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">

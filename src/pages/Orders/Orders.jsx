@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useApi } from '../../contexts/ApiContext';
 
 export default function Orders() {
-  const [orders, setOrders] = useState([]);
   const [search, setSearch] = useState('');
+  const {orders, fetchOrders} = useApi();
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/orders');
-        console.log(response)
-        setOrders(response.data.orders);
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      }
-    };
+    
     fetchOrders();
   }, []);
 
@@ -44,7 +37,7 @@ export default function Orders() {
         </thead>
         <tbody>
           {filteredOrders.map(order => (
-            <tr key={order._id}>
+            <tr key={order.id}>
               <td>{order._id}</td>
               <td>{order.user.name}</td>
               <td>

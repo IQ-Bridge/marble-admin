@@ -50,7 +50,7 @@ export function AuthProvider({ children }) {
     }
   };
   
-  const logout = async () => {
+  const logoutFirebase = async () => {
     setLoading(true); 
     try {
       return await auth.signOut();
@@ -81,7 +81,7 @@ export function AuthProvider({ children }) {
     return unsubscribe;
   }, []);
 
-  const value = { currentUser, signup, loginFirebase , verifyEmailFirebase, logout, loading, forgetPasswordFirebase };
+  const value = { currentUser, signup, loginFirebase , verifyEmailFirebase, logoutFirebase, loading, forgetPasswordFirebase };
 
   return (
     <AuthContext.Provider value={value}>
