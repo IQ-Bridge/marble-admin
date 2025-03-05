@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./Dashboard.css";
-import ProductCard from "./components/ProductCArd/ProductCard";
+import ProductCard from "./components/ProductCard/ProductCard";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useApi } from "../../contexts/ApiContext";
