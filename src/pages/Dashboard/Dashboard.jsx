@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { fetch_products, products, admin, logout } = useApi();
+  const { fetch_products, products, admin, logout, orders } = useApi();
 
   const handleLogout = async () => {
     try {
@@ -50,7 +50,7 @@ export default function Dashboard() {
               <strong>Product Count:</strong> {products.length}
             </p>
             <p>
-              <strong>Order Count:</strong> {products.length * 5}
+              <strong>Order Count:</strong> {orders?.length}
             </p>
           </div>
           <div className="btn-group mt-3">
