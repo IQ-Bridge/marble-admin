@@ -15,10 +15,7 @@ import {
 // import { useNavigateOnce } from "../utils/UseNavigateOnce";
 import urls from "../utils/ApiUrls";
 
- const {
-  addProductUrl, fetchOrdersUrl, fetchProducts
-
- } = urls;
+const { addProductUrl, fetchOrdersUrl, fetchProducts, deleteProductUrl } = urls;
 const ApiContext = createContext();
 
 export function useApi() {
@@ -29,40 +26,40 @@ export function ApiProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [admin, setAdmin] = useState(() => getCookie("admin"));
-  const [orders, setOrders] = useState([])
+  const [orders, setOrders] = useState([]);
 
   const navigate = useNavigate();
 
-  const {  loginFirebase, logoutFirebase } = useAuth();
+  const { loginFirebase, logoutFirebase } = useAuth();
 
   const login = async (formData) => {
-    setLoading(true)
+    setLoading(true);
     try {
       const user = await loginFirebase(formData.email, formData.password);
-      if(user){
-        navigate('/dashboard')
-        toast.success('Successfully login!')
-        setCookie('admin', user.user)
+      if (user) {
+        navigate("/dashboard");
+        toast.success("Successfully login!");
+        setCookie("admin", user.user);
       }
     } catch (e) {
       handleFirebaseError(e);
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchOrders = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await getRequest(fetchOrdersUrl);
-      console.log(response)
+      console.log(response);
       setOrders(response.orders);
     } catch (error) {
-      toast.error('Error fetching orders.')
-      navigate('/dashboard')
-      console.error('Error fetching orders:', error);
-    }finally{
-      setLoading(false)
+      toast.error("Error fetching orders.");
+      navigate("/dashboard");
+      console.error("Error fetching orders:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,15 +80,15 @@ export function ApiProvider({ children }) {
     setLoading(true);
     try {
       const formData = createFormData(product, { image: image });
-  
+
       const response = await postRequest(addProductUrl, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-  
+
       if (response) {
         toast.success("Product added successfully!");
         fetch_products(); // Refresh Products List
-        navigate('/dashboard')
+        navigate("/dashboard");
       } else {
         toast.error(response.message || "Failed to add product.");
       }
@@ -102,7 +99,21 @@ export function ApiProvider({ children }) {
       setLoading(false);
     }
   };
-  
+
+  const delete_product = async (productId) => {
+    setLoading(true);
+    try {
+      const response = await deleteRequest(`${deleteProductUrl}/${productId}`);
+console.log(response)
+      toast.success(response.message || "Product deleted successfully!");
+      fetch_products();
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      toast.error("Something went wrong while deleting product.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const logout = async () => {
     setLoading(true);
@@ -118,8 +129,6 @@ export function ApiProvider({ children }) {
     }
   };
 
-  
-
   const fetch_products = async () => {
     setLoading(true);
     try {
@@ -133,7 +142,6 @@ export function ApiProvider({ children }) {
     }
   };
 
-  
   function createFormData(data, extraFields = {}, excludeKeys = []) {
     const formData = new FormData();
 
@@ -220,11 +228,13 @@ export function ApiProvider({ children }) {
     fetch_products,
     products,
     loading,
-    login, 
+    login,
     admin,
     logout,
     fetchOrders,
-    orders, add_product
+    orders,
+    add_product,
+    delete_product,
   };
   return (
     <ApiContext.Provider value={value}>

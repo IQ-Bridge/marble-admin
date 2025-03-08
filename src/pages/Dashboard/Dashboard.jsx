@@ -20,6 +20,8 @@ export default function Dashboard() {
     }
   };
 
+
+
   useEffect(() => {
     fetch_products();
   }, []);
@@ -33,7 +35,7 @@ export default function Dashboard() {
 
   return (
     <div className="d-flex flex-column justify-content-center align-items-center">
-      <div className="card user-card sticky-top w-75 shadow p-4">
+      <div className="card user-card w-75 shadow p-4">
         <div className="card-body">
           <h2 className="mb-3">Hello, {admin?.email || 'user'} 👋</h2>
           <div className="card-content">
