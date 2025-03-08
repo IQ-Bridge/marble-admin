@@ -40,6 +40,7 @@ export function ApiProvider({ children }) {
         navigate("/dashboard");
         toast.success("Successfully login!");
         setCookie("admin", user.user);
+        setAdmin(user.user)
       }
     } catch (e) {
       handleFirebaseError(e);
