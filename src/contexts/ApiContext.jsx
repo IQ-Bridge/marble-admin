@@ -16,7 +16,7 @@ import {
 import urls from "../utils/ApiUrls";
 
  const {
-  addProductUrl, fetchOrders, fetchProducts
+  addProductUrl, fetchOrdersUrl, fetchProducts
 
  } = urls;
 const ApiContext = createContext();
@@ -52,14 +52,17 @@ export function ApiProvider({ children }) {
   };
 
   const fetchOrders = async () => {
+    setLoading(true)
     try {
-      const response = await getRequest(fetchOrders);
+      const response = await getRequest(fetchOrdersUrl);
       console.log(response)
       setOrders(response.orders);
     } catch (error) {
       toast.error('Error fetching orders.')
       navigate('/dashboard')
       console.error('Error fetching orders:', error);
+    }finally{
+      setLoading(false)
     }
   };
 

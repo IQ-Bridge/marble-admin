@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Orders.css'
 import { useApi } from '../../contexts/ApiContext';
+import { IoMdRefresh } from 'react-icons/io';
 
 export default function Orders() {
   const [search, setSearch] = useState('');
-  const {orders, fetchOrders} = useApi();
+  const {orders, fetchOrders, loading} = useApi();
 
   useEffect(() => {
     
@@ -15,9 +17,15 @@ export default function Orders() {
     order.user.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  const refresh_orders = () => {
+    fetchOrders();
+  }
+
   return (
     <div className="container mt-4">
-      <h2 className="mb-3">Orders</h2>
+      <div className="d-flex mb-3 align-items-center"><h2 className="mb-0">Orders</h2>
+      <button onClick={refresh_orders} className='ms-auto refresh-button'><IoMdRefresh /></button></div>
+      
       <input
         type="text"
         className="form-control mb-3"
@@ -32,7 +40,6 @@ export default function Orders() {
             <th>User</th>
             <th>Products</th>
             <th>Total Amount</th>
-            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -42,17 +49,13 @@ export default function Orders() {
               <td>{order.user.name}</td>
               <td>
                 {order.products.map(product => (
-                  <div key={product.product}>
+                  <div key={product._id}>
                     {product.product.name} (x{product.quantity})
                   </div>
                 ))}
               </td>
               <td>₹{order.total_amount}</td>
-              <td>
-                <span className={`badge bg-${'success'}`}>
-                  {"completed"}
-                </span>
-              </td>
+              
             </tr>
           ))}
         </tbody>
