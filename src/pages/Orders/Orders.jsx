@@ -13,6 +13,8 @@ export default function Orders() {
     fetchOrders();
   }, []);
 
+  console.log('orders: ', orders)
+
   const filteredOrders = orders.filter(order => 
     order.user.name.toLowerCase().includes(search.toLowerCase())
   );
@@ -44,13 +46,26 @@ export default function Orders() {
         </thead>
         <tbody>
           {filteredOrders.map(order => (
-            <tr key={order.id}>
+            <tr key={order._id}>
               <td>{order._id}</td>
-              <td>{order.user.name}</td>
+              <td>
+  <div>
+    <strong>{order.user.name}</strong>
+    <select className="form-select mt-1">
+      <option value="">View Details</option>
+      <option value={order.user.uid}><b>UID:</b> {order.user.uid}</option>
+      <option value={order.user.phone_number}><b>Phone:</b> {order.user.phone_number}</option>
+      <option value={order.user.email}><b>Email: </b>{order.user.email}</option>
+      <option value={order.user.address}><b>Address:</b> {order.user.address}</option>
+    </select>
+  </div>
+</td>
+
+
               <td>
                 {order.products.map(product => (
                   <div key={product._id}>
-                    {product.product.name} (x{product.quantity})
+                    {product?.product?.name || (<span style={{color: 'red'}}>Product Unavailable</span>)} (x{product.quantity})
                   </div>
                 ))}
               </td>
