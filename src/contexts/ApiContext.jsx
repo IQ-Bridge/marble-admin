@@ -15,7 +15,7 @@ import {
 // import { useNavigateOnce } from "../utils/UseNavigateOnce";
 import urls from "../utils/ApiUrls";
 
-const { addProductUrl, fetchOrdersUrl, fetchProducts, deleteProductUrl } = urls;
+const { addProductUrl,fetchAdminUrl, fetchOrdersUrl, fetchProducts, deleteProductUrl } = urls;
 const ApiContext = createContext();
 
 export function useApi() {
@@ -37,10 +37,13 @@ export function ApiProvider({ children }) {
     try {
       const user = await loginFirebase(formData.email, formData.password);
       if (user) {
+        console.log(user.user)
+        const apiUser = await getRequest(`${fetchAdminUrl}/${user.user.uid}`);
+        console.log(apiUser)
         navigate("/dashboard");
         toast.success("Successfully login!");
         setCookie("admin", user.user);
-        setAdmin(user.user)
+        setAdmin(apiUser.admin)
       }
     } catch (e) {
       handleFirebaseError(e);

@@ -48,6 +48,7 @@ export default function Login() {
               className="form-control"
               placeholder="Enter your email"
               value={formData.email}
+              autoComplete="off"
               onChange={(e) => handleInputChange(e, setFormData)}
               required
             />

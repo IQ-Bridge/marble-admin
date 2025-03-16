@@ -18,7 +18,7 @@ export default function Dashboard() {
     } catch (e) {
       toast.error("Something went wrong");
     }
-  };
+  }
 
 
 
@@ -40,11 +40,10 @@ export default function Dashboard() {
           <h2 className="mb-3">Hello, {admin?.email || 'user'} 👋</h2>
           <div className="card-content">
             <p>
-              <strong>Mobile:</strong> 123456789
+              <strong>Mobile:</strong> {admin?.phone || "N/A"}
             </p>
             <p>
-              <strong>Address:</strong> No.37, Thiruvalluvar Nagar Main Road,
-              Keelkatalai, Chennai - 600117
+              <strong>Address:</strong> {admin?.address || "N/A"}
             </p>
             <p>
               <strong>Product Count:</strong> {products.length}
